@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:login_demo/connectivity/container/di_container.dart' as DI;
-import 'package:login_demo/provider/UserAuthProvider.dart';
-import 'package:login_demo/utils/routes/RouteNames.dart';
-import 'package:login_demo/utils/routes/Routes.dart';
+import 'package:login_demo/provider/user_auth_provider.dart';
+import 'package:login_demo/utils/routes/route_names.dart';
+import 'package:login_demo/utils/routes/routes.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
@@ -23,7 +23,7 @@ class LoginApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Login Demo Rest Api',
-      initialRoute: RouteNames.Login,
+      initialRoute: RouteNames.Splash,
       onGenerateRoute: Routes.generateRoutes,
     );
   }

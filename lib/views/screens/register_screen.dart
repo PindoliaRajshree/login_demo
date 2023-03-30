@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:login_demo/connectivity/model/User.dart';
-import 'package:login_demo/provider/UserAuthProvider.dart';
-import 'package:login_demo/res/Utils.dart';
-import 'package:login_demo/utils/routes/RouteNames.dart';
+import 'package:login_demo/connectivity/model/user.dart';
+import 'package:login_demo/connectivity/session/user_session_manager.dart';
+import 'package:login_demo/provider/user_auth_provider.dart';
+import 'package:login_demo/res/utils.dart';
+import 'package:login_demo/utils/routes/route_names.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   var widthsize, heightsize;
+  TextEditingController nameController = new TextEditingController();
   TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
   var formKey = GlobalKey<FormState>();
@@ -24,15 +26,14 @@ class _LoginScreenState extends State<LoginScreen> {
     widthsize = MediaQuery.of(context).size.width;
     heightsize = MediaQuery.of(context).size.height;
     return Consumer<UserAuthProvider>(
-      builder: (context, authProvider, child) {
+      builder: (context, authprovider, child) {
         return SafeArea(
           child: Scaffold(
             backgroundColor: Colors.white,
-            body: authProvider.loader
+            body: authprovider.loader
                 ? Center(
-                    child: CircularProgressIndicator(
-                    color: Colors.pink,
-                  ))
+                    child: CircularProgressIndicator(color: Colors.pink),
+                  )
                 : SingleChildScrollView(
                     child: Form(
                       key: formKey,
@@ -41,6 +42,28 @@ class _LoginScreenState extends State<LoginScreen> {
                         width: widthsize,
                         child: Column(
                           children: [
+                            Stack(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.of(context)
+                                            .pushReplacementNamed(
+                                                RouteNames.Login);
+                                      },
+                                      child: Icon(
+                                        Icons.arrow_back,
+                                        color: Colors.pink,
+                                        size: 30.0,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                             SizedBox(
                               height: 40.0,
                             ),
@@ -48,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  'Login',
+                                  'Register User',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
@@ -60,6 +83,68 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             SizedBox(
                               height: 50.0,
+                            ),
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: 20.0,
+                                ),
+                                Text(
+                                  "Name",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Expanded(
+                                  child: TextFormField(
+                                    controller: nameController,
+                                    cursorColor: Colors.black,
+                                    style: TextStyle(
+                                      fontSize: 16.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      hintText: "Name",
+                                      hintStyle: TextStyle(
+                                        color: Colors.black54,
+                                      ),
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Colors.black54,
+                                          width: 2.0,
+                                        ),
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Colors.black,
+                                          width: 2.0,
+                                        ),
+                                      ),
+                                    ),
+                                    textInputAction: TextInputAction.next,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 20,
                             ),
                             Row(
                               children: [
@@ -149,10 +234,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                 Expanded(
                                   child: TextFormField(
                                     controller: passwordController,
+                                    cursorColor: Colors.black,
                                     inputFormatters: <TextInputFormatter>[
                                       LengthLimitingTextInputFormatter(8),
                                     ],
-                                    cursorColor: Colors.black,
                                     style: TextStyle(
                                       fontSize: 16.0,
                                       color: Colors.black,
@@ -197,32 +282,38 @@ class _LoginScreenState extends State<LoginScreen> {
                                   child: ElevatedButton(
                                     onPressed: () {
                                       RegExp pattern = new RegExp(
-                                          r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
-                                      if (emailController.text.isEmpty) {
+                                          r'^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
+                                      if (nameController.text.isEmpty) {
+                                        getFlushbar(
+                                            'Please Enter Name', context);
+                                      } else if (emailController.text.isEmpty) {
                                         getFlushbar(
                                             'Please Enter Email', context);
                                       } else if (!pattern
                                           .hasMatch(emailController.text)) {
-                                        getFlushbar('Please Enter Correct Email',
+                                        getFlushbar(
+                                            'Please Enter Correct Email',
                                             context);
                                       } else if (passwordController
                                           .text.isEmpty) {
                                         getFlushbar(
                                             'Please Enter Password', context);
-                                      } else if (passwordController.text.length <
+                                      } else if (passwordController
+                                              .text.length <
                                           8) {
                                         getFlushbar(
                                             'Password length must be of 8 ',
                                             context);
                                       } else {
-                                        authProvider.UserLogin(
-                                            emailController.text,
-                                            passwordController.text,
+                                        authprovider.getRegisterUser(
+                                            nameController.text.toString(),
+                                            emailController.text.toString(),
+                                            passwordController.text.toString(),
                                             handleResponse);
                                       }
                                     },
                                     style: ElevatedButton.styleFrom(
-                                      primary: Colors.pink,
+                                      backgroundColor: Colors.pink,
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(10),
                                       ),
@@ -230,7 +321,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     child: Padding(
                                       padding: const EdgeInsets.all(12.0),
                                       child: Text(
-                                        "Login",
+                                        "Register",
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.normal,
@@ -245,31 +336,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ],
                             ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  width: 20.0,
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    Navigator.of(context).pushReplacementNamed(
-                                        RouteNames.Register);
-                                  },
-                                  child: Text(
-                                    "Register User",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
                           ],
                         ),
                       ),
@@ -281,15 +347,23 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  handleResponse(Map? data, String? message) async {
-    if (data != null) {
+  handleResponse(Map? data, String? message, bool? isError) async {
+    if (data != null && !isError!) {
       User user = User.fromJson(data);
-      Navigator.of(context).pushReplacementNamed(RouteNames.Profile,
-          arguments: user);
-      getFlushbar('${user.name} $message', context);
+
+      UserSessionManager sessionManager = new UserSessionManager();
+      bool isSetUser = await sessionManager.setUser(user);
+
+      if (isSetUser) {
+        await sessionManager.setLogin(true);
+        Navigator.of(context).pushReplacementNamed(RouteNames.Profile,
+            arguments: {'user': user});
+        getFlushbar('$message', context);
+      }
     } else {
       getFlushbar(message!, context);
     }
+    nameController.clear();
     emailController.clear();
     passwordController.clear();
   }

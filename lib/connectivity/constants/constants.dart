@@ -1,0 +1,22 @@
+const String DEVICE_TOKEN = "ABCDEFGHIJK";
+const String DEVICE_TYPE = "android";
+const String ISTOKEN = "ISABCDEFGH";
+
+//Parameters
+const String NAME = 'name';
+const String EMAIL = 'email';
+const String PASSWORD = 'password';
+const String LOGIN_USER_ID = 'login_user_id';
+const String USERNAME = 'username';
+const String DEVICE_LATITUDE = 'device_latitude';
+const String DEVICE_LONGITUDE = 'device_longitude';
+
+//Response Key
+const String ERROR = 'error';
+
+//Session Keys
+const String IS_LOGIN = 'is_login';
+
+//auth token
+const String AUTH_TOKEN =
+    "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIyIiwianRpIjoiYjQxYjcyN2VkOTY5NGMzODQ1ZjM3ZDFmMTkwMjAyYzMxODY4YmU2MTc3OGI2ZjJlOGMwNjY2MzZkZjhhMGE5NzE0ZWE4ZGE2MTBlMjkxYWMiLCJpYXQiOjE2Nzc4MjI2MTEuMTk0MDYxLCJuYmYiOjE2Nzc4MjI2MTEuMTk0MDcsImV4cCI6MzMyMzQ3MzE0MTEuMTYwNjYsInN1YiI6IjEiLCJzY29wZXMiOltdfQ.zTZvF547MhKLOm9sAfqs1Y5hRTpSziPc8TEAV_N_XnukXUoi3KxBHLl6J2avQm2vw_IvIw9Wmvjun8jZjF2xxRICx157cL12lw7TMruNqkynWhZ5k0V_FnP6KrcUO9mTOMR9gNj_mASpHDeMqFeFIJChPWxvd_1lslPaJ91om5FHFnhm8OzzRZXQweSFM9J0UO5t4UfixkWoG0xatubyeFkVp4GsYusoG4UGYFSGCj5aM2KqPmg6LvMIh6skJraV9ufSdj7mWMXCLoA8feSl40bvpHttfdaI709gb3ajyXMtksKt6fGILD8_kESxvP4N1HYdMGO49M2y8ASOHBV5d7OPzYl0PoiTtWSTnmhiJbflFsbczI8OGfYG0cubb8nSQDxRJQ51QReIwO7UCuxnEnDG8Gz7IKOg8ahnarcmBrW2zxr0hM1UmOeAsry9gB-Q8RABcB7fUPBMZN45r6oJqF5inr6qYKouS8_sd78ebUY-jAyYvSFyCL_uZ3lTDic4qXTtICf981GwSa6uGKcdR8UYrq0xbiU0N7RAAua2TF0aVfA6waMT8aCfjuvQA-ypk64YyydkfPr8QOUrqByuNA6OWgkkcdsKSUrD8V6dJvg3ZLEukS_lOTi5SZcvIpjaIQnVKpCgNcLVyqEz-e7ENEr81F0zepDfROlxCeehCpg";

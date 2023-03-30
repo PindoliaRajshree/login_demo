@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:login_demo/connectivity/model/User.dart';
-import 'package:login_demo/provider/UserAuthProvider.dart';
-import 'package:login_demo/res/Utils.dart';
-import 'package:login_demo/utils/routes/RouteNames.dart';
-import 'package:login_demo/views/screens/LoginScreen.dart';
+import 'package:login_demo/connectivity/model/user.dart';
+import 'package:login_demo/connectivity/session/user_session_manager.dart';
+import 'package:login_demo/provider/user_auth_provider.dart';
+import 'package:login_demo/res/utils.dart';
+import 'package:login_demo/utils/routes/route_names.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
-  final User? user;
-
-  const ProfileScreen({Key? key, this.user}) : super(key: key);
+  const ProfileScreen({Key? key}) : super(key: key);
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -17,9 +15,14 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   var widthsize, heightsize;
+  User? user;
 
   @override
   Widget build(BuildContext context) {
+    Map arguments = (ModalRoute.of(context)?.settings.arguments ??
+        <String, dynamic>{}) as Map;
+    user = arguments['user'];
+
     widthsize = MediaQuery.of(context).size.width;
     heightsize = MediaQuery.of(context).size.height;
     return Consumer<UserAuthProvider>(
@@ -46,7 +49,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 child: InkWell(
                                   onTap: () {
                                     authprovider.UserLogout(
-                                        widget.user!.id, handleResponse);
+                                        user!.id, handleResponse);
                                   },
                                   child: Icon(
                                     Icons.logout_sharp,
@@ -89,7 +92,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             height: 10.0,
                           ),
                           Text(
-                            widget.user!.name.toString(),
+                            user!.name.toString(),
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 18.0,
@@ -110,7 +113,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             height: 10.0,
                           ),
                           Text(
-                            widget.user!.email.toString(),
+                            user!.email.toString(),
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 18.0,
@@ -131,7 +134,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             height: 10.0,
                           ),
                           Text(
-                            widget.user!.userType.toString(),
+                            user!.userType.toString(),
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 18.0,
@@ -147,11 +150,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  handleResponse(Map? data, String? message) async {
-    if (data != null) {
+  handleResponse(Map? data, String? message, bool? isError) async {
+    if (data != null && !isError!) {
       User user = User.fromJson(data);
-      Navigator.of(context).pushReplacementNamed(RouteNames.Login);
-      getFlushbar('${user.name} $message', context);
+      print('${user.name}');
+
+      UserSessionManager sessionManager = new UserSessionManager();
+      bool isLogin = await sessionManager.getLogin();
+
+      if (isLogin) {
+        await sessionManager.logoutUser();
+        Navigator.of(context).pushReplacementNamed(RouteNames.Login);
+        getFlushbar('$message', context);
+      }
     } else {
       getFlushbar(message!, context);
     }

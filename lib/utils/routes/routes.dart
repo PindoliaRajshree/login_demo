@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:login_demo/connectivity/model/User.dart';
-import 'package:login_demo/utils/routes/RouteNames.dart';
-import 'package:login_demo/views/screens/LoginScreen.dart';
-import 'package:login_demo/views/screens/ProfileScreen.dart';
-import 'package:login_demo/views/screens/RegisterScreen.dart';
+import 'package:login_demo/utils/routes/route_names.dart';
+import 'package:login_demo/views/screens/login_screen.dart';
+import 'package:login_demo/views/screens/profile_screen.dart';
+import 'package:login_demo/views/screens/register_screen.dart';
+import 'package:login_demo/views/screens/splash_screen.dart';
 
 class Routes {
   static Route<dynamic> generateRoutes(RouteSettings settings) {
@@ -16,13 +16,13 @@ class Routes {
         return MaterialPageRoute(
             builder: (context) => RegisterScreen(), settings: settings);
 
-      case RouteNames.Profile:
-        final args = settings.arguments as User;
+      case RouteNames.Splash:
         return MaterialPageRoute(
-            builder: (context) => ProfileScreen(
-                  user: args,
-                ),
-            settings: settings);
+            builder: (context) => SplashScreen(), settings: settings);
+
+      case RouteNames.Profile:
+        return MaterialPageRoute(
+            builder: (context) => ProfileScreen(), settings: settings);
 
       default:
         return MaterialPageRoute(

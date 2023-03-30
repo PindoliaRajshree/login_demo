@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:login_demo/connectivity/base/ApiResponse.dart';
-import 'package:login_demo/connectivity/constants/Constants.dart';
-import 'package:login_demo/connectivity/model/User.dart';
-import 'package:login_demo/repository/UserAuthRepository.dart';
+import 'package:login_demo/connectivity/base/api_response.dart';
+import 'package:login_demo/connectivity/constants/constants.dart';
+import 'package:login_demo/connectivity/model/user.dart';
+import 'package:login_demo/repository/user_auth_repository.dart';
 
 class UserAuthProvider with ChangeNotifier {
   final UserAuthRepo userAuthRepo;
@@ -19,7 +19,7 @@ class UserAuthProvider with ChangeNotifier {
     notifyListeners();
     try {
       ApiResponse apiResponse =
-          await userAuthRepo.userProfileRegister(name, email, password);
+      await userAuthRepo.userProfileRegister(name, email, password);
       print(
           'UserRegister: ApiResponse.Data.success ${apiResponse.response?.data.toString()}');
 
@@ -31,16 +31,16 @@ class UserAuthProvider with ChangeNotifier {
         print(
             'Provider: UserRegister: apiResponse.response?.Map.Data = ${map['data']}');
 
-        if (map[Constants.ERROR] == true) {
+        if (map[ERROR] == true) {
           loader = false;
           notifyListeners();
-          callback(null, map['message']);
+          callback(null, map['message'], true);
         } else {
           loader = false;
           notifyListeners();
           user = User.fromJson(map['data']);
           print('Provider: UserRegister: ${user!.toJson().toString()}');
-          callback(map['data'], map['message']);
+          callback(map['data'], map['message'], false);
         }
       } else {
         loader = false;
@@ -48,7 +48,7 @@ class UserAuthProvider with ChangeNotifier {
         print(
             'Provider: UserRegister - apiResponse.Error = ${apiResponse.error}');
         Map map = apiResponse.error;
-        callback(null, map['message']);
+        callback(null, map['message'], true);
         notifyListeners();
       }
     } catch (e) {
@@ -56,7 +56,7 @@ class UserAuthProvider with ChangeNotifier {
       notifyListeners();
       print(
           'Provider: UserRegister - apiResponse.response?.Exception = ${e.toString()}');
-      callback(null, e.toString());
+      callback(null, e.toString(), true);
     }
   }
 
@@ -76,16 +76,16 @@ class UserAuthProvider with ChangeNotifier {
         print(
             'Provider: UserLogout: apiResponse.response?.Map.Data = ${map['data']}');
 
-        if (map[Constants.ERROR] == true) {
+        if (map[ERROR] == true) {
           loader = false;
           notifyListeners();
-          callback(null, map['message']);
+          callback(null, map['message'], true);
         } else {
           loader = false;
           notifyListeners();
           user = User.fromJson(map['data']);
           print('Provider: UserLogout: ${user!.toJson().toString()}');
-          callback(map['data'], map['message']);
+          callback(map['data'], map['message'], false);
         }
       } else {
         loader = false;
@@ -93,7 +93,7 @@ class UserAuthProvider with ChangeNotifier {
         print(
             'Provider: UserLogout - apiResponse.Error = ${apiResponse.error}');
         Map map = apiResponse.error;
-        callback(null, map['message']);
+        callback(null, map['message'], true);
         notifyListeners();
       }
     } catch (e) {
@@ -101,7 +101,7 @@ class UserAuthProvider with ChangeNotifier {
       notifyListeners();
       print(
           'Provider: UserLogout - apiResponse.response?.Exception = ${e.toString()}');
-      callback(null, e.toString());
+      callback(null, e.toString(), true);
     }
   }
 
@@ -111,7 +111,7 @@ class UserAuthProvider with ChangeNotifier {
     notifyListeners();
     try {
       ApiResponse apiResponse =
-          await userAuthRepo.userLogin(username, password);
+      await userAuthRepo.userLogin(username, password);
       print(
           'UserLogin: ApiResponse.Data.success ${apiResponse.response?.data.toString()}');
 
@@ -123,23 +123,23 @@ class UserAuthProvider with ChangeNotifier {
         print(
             'Provider: UserLogin: apiResponse.response?.Map.Data = ${map['data']}');
 
-        if (map[Constants.ERROR] == true) {
+        if (map[ERROR] == true) {
           loader = false;
           notifyListeners();
-          callback(null, map['message']);
+          callback(null, map['message'], true);
         } else {
           loader = false;
           notifyListeners();
           user = User.fromJson(map['data']);
           print('Provider: UserLogin: ${user!.toJson().toString()}');
-          callback(map['data'], map['message']);
+          callback(map['data'], map['message'], false);
         }
       } else {
         loader = false;
         notifyListeners();
         print('Provider: UserLogin - apiResponse.Error = ${apiResponse.error}');
         Map map = apiResponse.error;
-        callback(null, map['message']);
+        callback(null, map['message'], true);
         notifyListeners();
       }
     } catch (e) {
@@ -147,7 +147,7 @@ class UserAuthProvider with ChangeNotifier {
       notifyListeners();
       print(
           'Provider: UserLogin - apiResponse.response?.Exception = ${e.toString()}');
-      callback(null, e.toString());
+      callback(null, e.toString(), true);
     }
   }
 }

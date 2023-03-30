@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:login_demo/connectivity/constants/Constants.dart';
+import 'package:login_demo/connectivity/constants/constants.dart';
 
 class DioClient {
   late String baseUrl;
@@ -10,7 +10,7 @@ class DioClient {
 
   DioClient(this.baseUrl, Dio dioC) {
     dio = dioC;
-    token = Constants.AUTH_TOKEN;
+    token = AUTH_TOKEN;
     dio
       ..options.baseUrl = baseUrl
       ..options.connectTimeout = Duration(milliseconds: 30000)

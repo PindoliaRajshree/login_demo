@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:login_demo/connectivity/base/ApiErrorHandler.dart';
-import 'package:login_demo/connectivity/base/ApiResponse.dart';
-import 'package:login_demo/connectivity/constants/Constants.dart';
-import 'package:login_demo/data/dio/DioClient.dart';
-import 'package:login_demo/res/AppUrl.dart';
-import 'package:login_demo/res/Helper.dart';
+import 'package:login_demo/connectivity/base/api_error_handler.dart';
+import 'package:login_demo/connectivity/base/api_response.dart';
+import 'package:login_demo/connectivity/constants/constants.dart';
+import 'package:login_demo/data/dio/dio_client.dart';
+import 'package:login_demo/res/app_url.dart';
+import 'package:login_demo/res/helper.dart';
 
 class UserAuthRepo {
   final DioClient client;
@@ -13,33 +13,33 @@ class UserAuthRepo {
 
   Future<ApiResponse> userLogin(String? username, String? password) async {
     Map<String, dynamic> params = getRequestParams(true);
-    params[Constants.USERNAME] = username;
-    params[Constants.PASSWORD] = password;
-    params[Constants.DEVICE_LATITUDE] = '72.02';
-    params[Constants.DEVICE_LONGITUDE] = '23.02';
+    params[USERNAME] = username;
+    params[PASSWORD] = password;
+    params[DEVICE_LATITUDE] = '72.02';
+    params[DEVICE_LONGITUDE] = '23.02';
 
-    print('Request Parameter $params');
+    print('userLogin: Request Parameter $params');
     try {
       Response response = await client.post(AppUrl.userLogin, data: params);
-      print('response.data=${response.data.toString()}');
+      print('userLogin: response.data=${response.data.toString()}');
       return ApiResponse.withSuccess(response);
     } catch (e) {
-      print('Api Response data Exceptions = $e');
+      print('userLogin: Api Response data Exceptions = $e');
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
     }
   }
 
   Future<ApiResponse> userLogout(int? loginUserId) async {
     Map<String, dynamic> params = getRequestParams(true);
-    params[Constants.LOGIN_USER_ID] = loginUserId;
+    params[LOGIN_USER_ID] = loginUserId;
 
-    print('Request Parameter $params');
+    print('userLogout: Request Parameter $params');
     try {
       Response response = await client.post(AppUrl.userLogout, data: params);
-      print('response.data=${response.data.toString()}');
+      print('userLogout: response.data=${response.data.toString()}');
       return ApiResponse.withSuccess(response);
     } catch (e) {
-      print('Api Response data Exceptions = $e');
+      print('userLogout: Api Response data Exceptions = $e');
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
     }
   }
@@ -47,18 +47,18 @@ class UserAuthRepo {
   Future<ApiResponse> userProfileRegister(
       String? name, String? email, String? password) async {
     Map<String, dynamic> params = getRequestParams(false);
-    params[Constants.NAME] = name;
-    params[Constants.EMAIL] = email;
-    params[Constants.PASSWORD] = password;
+    params[NAME] = name;
+    params[EMAIL] = email;
+    params[PASSWORD] = password;
 
-    print('Request Parameter $params');
+    print('userProfileRegister: Request Parameter $params');
     try {
       Response response =
           await client.post(AppUrl.userProfileUpdate, data: params);
-      print('response.data=${response.data.toString()}');
+      print('userProfileRegister: response.data=${response.data.toString()}');
       return ApiResponse.withSuccess(response);
     } catch (e) {
-      print('Api Response data Exceptions = ${e}');
+      print('userProfileRegister: Api Response data Exceptions = ${e}');
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
     }
   }

@@ -2,10 +2,10 @@
 
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
-import 'package:login_demo/data/dio/DioClient.dart';
-import 'package:login_demo/provider/UserAuthProvider.dart';
-import 'package:login_demo/repository/UserAuthRepository.dart';
-import 'package:login_demo/res/AppUrl.dart';
+import 'package:login_demo/data/dio/dio_client.dart';
+import 'package:login_demo/provider/user_auth_provider.dart';
+import 'package:login_demo/repository/user_auth_repository.dart';
+import 'package:login_demo/res/app_url.dart';
 
 final getIt = GetIt.instance;
 

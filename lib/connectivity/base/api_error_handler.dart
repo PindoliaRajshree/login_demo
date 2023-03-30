@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:login_demo/connectivity/model/ErrorResponse.dart';
+import 'package:login_demo/connectivity/model/error_response.dart';
 
 class ApiErrorHandler {
   static dynamic getMessage(error) {
